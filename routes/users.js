@@ -30,11 +30,22 @@ router.get('/search', (req, res) => {
     });
 });
 
-router.get('/:city', (req, res) => {
-    const { city } = req.params;
-    db.find({ city }, (err, docs) => {
+router.get('/:uid', (req, res) => {
+    const { uid } = req.params;
+    db.find({ _id: uid }, (err, docs) => {
         res.send(docs);
     });
+});
+
+router.delete('/delete', (req, res) => {
+    const data = {};
+    Object.entries(req.query).map(query => {
+        const [key, value] = query;
+        !!value && (data[key] = { ['$regex']: new RegExp(value, 'i') });
+    });
+    db.remove(data, {}, (err, numRemoved) => {});
+    res.send(name + ' deleted');
+    res.status(200).end();
 });
 
 module.exports = router;
