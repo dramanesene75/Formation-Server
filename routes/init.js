@@ -15,7 +15,7 @@ router.post('/', async (req, res, next) => {
     const data = await temp.json();
     const formattedData = data.reduce((acc, curr) => [...acc, ...curr], []);
     db.insert(formattedData);
-    res.send('init');
+    res.status(200).end();
 });
 
 module.exports = {
